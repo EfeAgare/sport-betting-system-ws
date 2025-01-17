@@ -7,7 +7,6 @@ function createRandomUser() {
 		username: faker.person.firstName(),
 		email: faker.internet.email(),
 		password: 'passwerk', //faker.internet.password(),
-		balance: parseFloat(faker.finance.amount()), // Ensure balance is a number
 	};
 }
 
@@ -22,8 +21,26 @@ export async function simulateUserRegister() {
 		});
 
 		const userData = response.data;
+		const token = userData.token;
+
+		// Update the new user
+		const update = await axios.put(
+			`${process.env.BASE_URL}/users/update`,
+			{
+				user: {
+					username: userData.username,
+					balance: parseFloat(
+						faker.finance.amount({ min: 1000, max: 1000000 })
+					),
+				},
+			},
+			{ headers: { Authorization: `Bearer ${token}` } }
+		);
+
+		const updateData = response.data;
 
 		// console.log('New user created:', userData);
+		// console.log('update user created:', updateData);
 	} catch (error) {
 		if (error instanceof Error) {
 			console.error('Error during simulation:', error.message);
