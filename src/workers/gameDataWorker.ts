@@ -8,8 +8,6 @@ gameDataQueue.process(async (job) => {
 		const response = await axios.get(`${process.env.BASE_URL}/games`);
 		const gameData = response.data;
 
-		console.log('gameData', gameData);
-		// Process the game data (e.g., filter, transform, etc.)
 		const processedData = processGameData(gameData);
 
 		// Publish processed data to Redis for WebSocket server to send to clients
