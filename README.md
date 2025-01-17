@@ -19,3 +19,5 @@
   ```
 ## Set Environment Variables
 Create a .env file in the root of your Rails project and follow the pattern of variables in env.example
+
+- When you run the code it tries to simulate the steps of a user, regsitering/or login, then placing a bet, fetching the betting history as well
