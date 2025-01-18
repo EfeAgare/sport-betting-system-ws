@@ -22,13 +22,18 @@ gameDataQueue.process(async (job) => {
 });
 
 function processGameData(data: any) {
-	return data.map((game: any) => ({
-		...game,
-		betting_odds: {
-			home: Math.random() * 100,
-			away: Math.random() * 100,
-		},
-	}));
+	try {
+		return data.map((game: any) => ({
+			...game,
+			betting_odds: {
+				home: Math.random() * 100,
+				away: Math.random() * 100,
+			},
+		}));
+	} catch (error) {
+		console.error('Error processing individual game data:', error);
+		return [];
+	}
 }
 
 export default gameDataQueue;

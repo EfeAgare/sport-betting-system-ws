@@ -11,9 +11,18 @@ export const setupRedis = async (io: Server) => {
   pubClient.on('error', (err) => {
     console.error('Redis client error', err);
   });
+  
+  subClient.on('error', (err) => {
+    console.error('Redis client error', err);
+  });
 
-  await pubClient.connect();
-  await subClient.connect();
+  await pubClient.connect().catch(err => {
+    console.error('Failed to connect to Redis:', err);
+  });
+
+  await subClient.connect().catch(err => {
+    console.error('Failed to connect to Redis:', err);
+  });
 
   subClient.subscribe('game_updates', (message) => {
     try {
