@@ -6,11 +6,11 @@ export async function simulateUserBet() {
 	try {
 		// the new user
 		const userResponse = await axios.get(`${process.env.BASE_URL}/users`);
-		const users = userResponse.data;
+		const users = userResponse.data?.users;
 
 		// Fetch available games
 		const gameResponse = await axios.get(`${process.env.BASE_URL}/games`);
-		const games = gameResponse.data;
+		const games = gameResponse.data?.games;
 
 		// Check if games are available
 		if (users.length === 0 || games.length === 0) {
@@ -34,13 +34,13 @@ export async function simulateUserBet() {
 		];
 
 		const betType = betTypes[Math.floor(Math.random() * betTypes.length)];
-		const picks = ['home', 'away'];
+		const picks = ['home', 'away', 'draw', 'over', 'under'];
 		const pick = picks[Math.floor(Math.random() * picks.length)];
 
 		// Register the new user
 		const response = await axios.post(`${process.env.BASE_URL}/sign_in`, {
 			user: {
-				email: user.email,
+				email: user?.email,
 				password: 'passwerk',
 			},
 		});
@@ -55,7 +55,7 @@ export async function simulateUserBet() {
 			pick: pick,
 			amount: parseFloat(faker.number.float({ min: 1, max: 15 }).toString()), // Random amount between 10 and 100
 			odds: parseFloat(
-				faker.number.float({ max: 10, fractionDigits: 2 }).toString()
+				faker.number.float({ min: 1, max: 4.9, fractionDigits: 2 }).toString()
 			), // Random odds
 		};
 
@@ -76,7 +76,7 @@ export async function simulateUserBet() {
 		// console.log('Bet history:', betHistoryResponse.data);
 	} catch (error) {
 		if (error instanceof Error) {
-			console.error('Error during simulation:', error.message);
+			console.error('Error during simulation:', error.message, error.name);
 		} else {
 			console.error('Error during simulation:', error);
 		}

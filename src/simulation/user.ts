@@ -24,11 +24,11 @@ export async function simulateUserRegister() {
 		const token = userData.token;
 
 		// Update the new user
-		const update = await axios.put(
+		const update = await axios.patch(
 			`${process.env.BASE_URL}/users/update`,
 			{
 				user: {
-					username: userData.username,
+					username: userData.user.username,
 					balance: parseFloat(
 						faker.finance.amount({ min: 1000, max: 1000000 })
 					),
@@ -37,13 +37,13 @@ export async function simulateUserRegister() {
 			{ headers: { Authorization: `Bearer ${token}` } }
 		);
 
-		const updateData = response.data;
+		const updateData = update.data;
 
 		// console.log('New user created:', userData);
 		// console.log('update user created:', updateData);
 	} catch (error) {
 		if (error instanceof Error) {
-			console.error('Error during simulation:', error.message);
+			console.error('Error during simulation:', error.message, error.name);
 		} else {
 			console.error('Error during simulation:', error);
 		}

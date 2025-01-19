@@ -26,6 +26,7 @@ function createRandomGame() {
 		home_score: faker.number.int({ min: 0, max: 5 }), // Random home score
 		away_score: faker.number.int({ min: 0, max: 5 }), // Random away score
 		time_elapsed: faker.number.int({ min: 0, max: 90 }), // Random time elapsed
+		status: 'scheduled',
 		events_attributes: events, // Include generated events
 	};
 }
@@ -43,7 +44,7 @@ export async function simulateGame() {
 		// console.log('New game created:', response.data); // Log the response from the server
 	} catch (error) {
 		if (error instanceof Error) {
-			console.error('Error during simulation:', error.message);
+			console.error('Error during simulation:', error.message, error.name);
 		} else {
 			console.error('Error during simulation:', error);
 		}
